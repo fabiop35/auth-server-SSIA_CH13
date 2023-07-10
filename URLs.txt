@@ -1,0 +1,5 @@
+#
+curl -XPOST -u client:secret "http://localhost:8080/oauth/token?grant_type=password&username=john&password=12345&scope=read" -v
+
+#
+curl -v -XPOST -u client:secret "http://localhost:8080/oauth/token?grant_type=password&username=john&password=12345&scope=read" {"access_token":"693e11d3-bd65-431b-95ff-a1c5f73aca8c", "token_type":"bearer", "expires_in":42637,   "scope":"read" } 
