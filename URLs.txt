@@ -16,10 +16,13 @@ http://localhost:9000/oauth/authorize?response_type=code&client_id=client&scope=
 http://localhost:9090/home?code=7G4Xuw
 
 3.
-curl -XPOST -u client:secret "http://localhost:9000/oauth/token?grant_type=authorization_code&scope=read&code=7G4Xuw" -v
+curl -XPOST -u client:secret "http://localhost:9000/oauth/token?grant_type=authorization_code&scope=read&code=2wJTNM" -v
 
 
 3.
 curl -XPOST -u client:secret "http://localhost:9000/oauth/token?grant_type=authorization_code&scope=read&code=7G4Xuw" -v
+
+#Client Credentials
+curl -v -XPOST -u client2:secret "http://localhost:9000/oauth/token?grant_type=client_credentials&scope=info"
 
 
