@@ -24,27 +24,30 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         endpoints.authenticationManager(authenticationManager);
     }
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        var service = new InMemoryClientDetailsService();
-
-        var cd = new BaseClientDetails();
-        cd.setClientId("client");
-        cd.setClientSecret("secret");
-        cd.setScope(List.of("read"));
-        cd.setAuthorizedGrantTypes(List.of("password"));
-
-        service.setClientDetailsStore(Map.of("client", cd));
-
-        clients.withClientDetails(service);
-    }
-
 //    @Override
 //    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-//        clients.inMemory()
-//                .withClient("client")
-//                .secret("secret")
-//                .authorizedGrantTypes("password", "refresh_token")
-//                .scopes("read");
+//        var service = new InMemoryClientDetailsService();
+//
+//        var cd = new BaseClientDetails();
+//        cd.setClientId("client");
+//        cd.setClientSecret("secret");
+//        cd.setScope(List.of("read"));
+//        cd.setAuthorizedGrantTypes(List.of("password"));
+//
+//        service.setClientDetailsStore(Map.of("client", cd));
+//
+//        clients.withClientDetails(service);
 //    }
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory()
+                .withClient("client")
+                .secret("secret")
+                .authorizedGrantTypes("authorization_code")
+                .scopes("read")
+                .redirectUris("http://localhost:9090/home");
+    }
+    
+    
 }

@@ -1,5 +1,25 @@
-#
+#PASSWORD grant type
+
 curl -XPOST -u client:secret "http://localhost:8080/oauth/token?grant_type=password&username=john&password=12345&scope=read" -v
 
-#
-curl -v -XPOST -u client:secret "http://localhost:8080/oauth/token?grant_type=password&username=john&password=12345&scope=read" {"access_token":"693e11d3-bd65-431b-95ff-a1c5f73aca8c", "token_type":"bearer", "expires_in":42637,   "scope":"read" } 
+http://localhost:8080/oauth/token
+grant_type=password
+username=john
+password=12345
+scope=read
+
+#code grant type
+1.
+http://localhost:9000/oauth/authorize?response_type=code&client_id=client&scope=read
+
+2.
+http://localhost:9090/home?code=7G4Xuw
+
+3.
+curl -XPOST -u client:secret "http://localhost:9000/oauth/token?grant_type=authorization_code&scope=read&code=7G4Xuw" -v
+
+
+3.
+curl -XPOST -u client:secret "http://localhost:9000/oauth/token?grant_type=authorization_code&scope=read&code=7G4Xuw" -v
+
+
