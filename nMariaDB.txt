@@ -1,0 +1,7 @@
+cd '/data/data/com.termux/files/usr' ; /data/data/com.termux/files/usr/bin/mariadbd-safe --datadir='/data/data/com.termux/files/usr/var/lib/mysql'
+
+support-files/mariadb.service
+
+'/data/data/com.termux/files/usr/bin/mariadb-secure-installation'
+
+
