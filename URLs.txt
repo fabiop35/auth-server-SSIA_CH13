@@ -1,8 +1,8 @@
 #PASSWORD grant type
 
-curl -XPOST -u client:secret "http://localhost:8080/oauth/token?grant_type=password&username=john&password=12345&scope=read" -v
+curl -XPOST -u client:secret "http://localhost:9000/oauth/token?grant_type=password&username=john&password=12345&scope=read" -v
 
-http://localhost:8080/oauth/token
+http://localhost:9000/oauth/token
 grant_type=password
 username=john
 password=12345
@@ -24,5 +24,17 @@ curl -XPOST -u client:secret "http://localhost:9000/oauth/token?grant_type=autho
 
 #Client Credentials
 curl -v -XPOST -u client2:secret "http://localhost:9000/oauth/token?grant_type=client_credentials&scope=info"
+
+#Resource Server
+1. 
+curl -XPOST -u client:secret "http://localhost:9000/oauth/token?grant_type=password&username=john&password=12345&scope=read" -v
+
+2.
+curl -XPOST -u resourceserver:resourceserversecret "http://localhost:9000/oauth/check_token?token="
+
+3.
+curl -H "Authorization: bearer " "http://localhost:9090/hello"
+
+
 
 
