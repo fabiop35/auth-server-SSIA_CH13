@@ -2,8 +2,9 @@ package com.security.authserver.config;
 
 import java.util.List;
 import java.util.Map;
-import javax.sql.DataSource;
+//import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,8 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
@@ -25,20 +28,31 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-    
-    @Autowired
-    private DataSource dataSource;
+
+    //@Autowired
+    //private DataSource dataSource;
+
+    @Value("${jwt.key}")
+    private String jwtKey;
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore());
-    }
-    
-    @Bean
-    public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource);
+        endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore())
+                .accessTokenConverter(jwtAccessTokenConverter());
     }
 
+    @Bean
+    public TokenStore tokenStore() {
+        //return new JdbcTokenStore(dataSource);
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        var converter = new JwtAccessTokenConverter();
+        converter.setSigningKey(jwtKey);
+        return converter;
+    }
 //    @Override
 //    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 //        var service = new InMemoryClientDetailsService();
@@ -53,6 +67,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 //
 //        clients.withClientDetails(service);
 //    }
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
@@ -61,15 +76,14 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .authorizedGrantTypes("authorization_code", "refresh_token", "password")
                 .scopes("read")
                 .redirectUris("http://localhost:9090/home")
-               .and()
+                .and()
                 .withClient("client2")
                 .secret("secret")
                 .authorizedGrantTypes("client_credentials")
                 .scopes("info")
-              .and()
+                .and()
                 .withClient("resourceserver")
-                .secret("resourceserversecret")
-              ;
+                .secret("resourceserversecret");
     }
 
     @Override
