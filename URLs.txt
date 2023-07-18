@@ -35,6 +35,8 @@ curl -XPOST -u resourceserver:resourceserversecret "http://localhost:9000/oauth/
 3.
 curl -H "Authorization: bearer " "http://localhost:9090/hello"
 
+#URL Public Key
+curl -u resourceserver:resourceserversecret http://localhost:9000/oauth/token_key
 
 
 
